@@ -1,23 +1,47 @@
 FROM centos:7
-RUN mkdir -p /var/www/html /etc/httpd/sites-available
+
+# Create environment variable
+ENV APACHE_LOG_DIR=logs
+
+RUN mkdir -p /var/www/html /etc/httpd/sites-available /scripts
 RUN chmod -R 755 /var/www
-RUN yum -y install epel-release
-RUN yum -y update
-RUN yum -y install git
-RUN cd /var/www && git clone https://github.com/digininja/DVWA.git
-RUN mv /var/www/DVWA /var/www/dvwa
-RUN yum -y install supervisor 
-RUN yum -y install httpd 
-RUN yum -y install mariadb-server 
+
+RUN yum -y update; yum clean all
+RUN yum -y install sudo
+# Install service command
+RUN yum -y install initscripts
+# Install Apache and set up it to start at boot
+RUN yum -y install httpd
+RUN httpd -version
+RUN systemctl enable httpd.service
+# Install Mariadb and set up it to start at boot
+RUN yum -y install mariadb-server
+RUN systemctl enable mariadb
+# Install PHP packages
 RUN yum -y install php
 RUN yum -y install php-mysqli 
 RUN yum -y install php-gd
-COPY ./config/dvwa.conf /etc/httpd/sites-available/
+# Install Git and download project
+RUN yum -y install git
+RUN cd /var/www && git clone https://github.com/digininja/DVWA.git
+RUN mv /var/www/DVWA /var/www/dvwa
+
+# Copy config files
 COPY ./config/httpd.conf /etc/httpd/conf/
+COPY ./config/my.cnf /etc/my.cnf
+COPY ./config/dvwa.conf /etc/httpd/sites-available/
 COPY ./config/config.inc.php /var/www/dvwa/config/
-COPY ./config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./config/auto_mysql_secure_installation.sh /scripts
+# Replace docker systemctl
+COPY ./config/systemctl.py /usr/bin/systemctl
+# Set permission for files and folders
 RUN chmod +w /var/www/dvwa/hackable/uploads/
 RUN chmod +w /var/www/dvwa/external/phpids/0.6/lib/IDS/tmp/phpids_log.txt
-WORKDIR /var/www/html
+RUN chmod a+x /usr/bin/systemctl
+RUN chmod +x /scripts/auto_mysql_secure_installation.sh
+RUN /scripts/auto_mysql_secure_installation.sh
+# Set default working folder
+WORKDIR /var/www/dvwa
 EXPOSE 80
-CMD ["/usr/bin/supervisord"]
+ENTRYPOINT ["httpd"]
+CMD ["-D", "FOREGROUND"]
