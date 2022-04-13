@@ -20,14 +20,14 @@
 
 ## Configuration
 
-- **docker build -t f1nl0wt3ch/dvwa-on-centos7:v1 -f Dockerfile .** build an image and give it a name as **dvwa** and version as **v1** from Dockerfile. If you don't want to cache the build, please add more argument like this **--no-cache=true**.
+- **docker build -t f1nl0wt3ch/dvwa-on-centos -f Dockerfile .** build an image and give it a name as **dvwa** and version as **v1** from Dockerfile. If you don't want to cache the build, please add more argument like this **--no-cache=true**.
 - **docker images** check if the image was created or not by listing all images locally.
-- **docker run --name f1nl0wt3ch -p 1234:80 -t -i f1nl0wt3ch/dvwa-on-centos7:v1** run a container from the image.
+- **docker run --name f1nl0wt3ch -p 1234:80 -t -i f1nl0wt3ch/dvwa-on-centos** run a container from the image.
 - **docker exec -it f1nl0wt3ch /bin/bash** enter the container.
 
 ## Docker Hub Install
-- **docker search dvwa** search images with **dvwa** keyword.
-- **docker pull f1nl0wt3ch/dvwa-on-centos7:v1** pull the image from Docker Hub.
+- **docker search dvwa-on-centos** search images with **dvwa** keyword.
+- **docker pull f1nl0wt3ch/dvwa-on-centos** pull the image from Docker Hub.
 
 ## Screenshot
 
