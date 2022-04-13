@@ -25,6 +25,10 @@
 - **docker run --name f1nl0wt3ch -p 1234:80 -t -i f1nl0wt3ch/dvwa-on-centos7:v1** run a container from the image.
 - **docker exec -it f1nl0wt3ch /bin/bash** enter the container.
 
+## Docker Hub Install
+- **docker search dvwa** search images with **dvwa** keyword.
+- **docker pull f1nl0wt3ch/dvwa-on-centos7** pull the image from Docker Hub.
+
 ## Screenshot
 
 ![dvwa.png](https://github.com/f1nl0wt3ch/dvwa/blob/main/dvwa.png)
