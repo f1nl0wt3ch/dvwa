@@ -27,7 +27,7 @@
 
 ## Docker Hub Install
 - **docker search dvwa** search images with **dvwa** keyword.
-- **docker pull f1nl0wt3ch/dvwa-on-centos7** pull the image from Docker Hub.
+- **docker pull f1nl0wt3ch/dvwa-on-centos7:v1** pull the image from Docker Hub.
 
 ## Screenshot
 
